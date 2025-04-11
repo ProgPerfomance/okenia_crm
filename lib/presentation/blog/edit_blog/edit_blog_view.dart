@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:okenia_crm/domain/entities/author_entity.dart';
 import 'package:okenia_crm/domain/entities/blog_entity.dart';
 import 'package:okenia_crm/presentation/blog/edit_blog/edit_blog_viewmodel.dart';
 import 'package:okenia_crm/presentation/blog/edit_blog/widgets/add_blog_module.dart';
@@ -14,7 +15,7 @@ class EditBlogView extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewmodel = Provider.of<EditBlogViewmodel>(context);
     return FutureBuilder(
-      future: viewmodel.pickAndUploadMultipleImages(),
+      future: viewmodel.getAuthors(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Scaffold(
@@ -54,12 +55,63 @@ class EditBlogView extends StatelessWidget {
                             ),
                             SizedBox(height: 12),
                             ExpansionTile(
-                              title: Text('Автор'),
-                              children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
+                              title:
+                              viewmodel.selectedAuthor != null ?
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                              ],
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(backgroundImage: NetworkImage(viewmodel.selectedAuthor?.avatarUrl ?? ''),),
+                                      SizedBox(width: 8,),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(viewmodel.selectedAuthor?.fullName ?? ''),
+                                          Text(viewmodel.selectedAuthor?.subTitle??''),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ) : Text('Автор'),
+                              children: List.generate(viewmodel.authors.length, (index) {
+                                AuthorEntity item = viewmodel.authors[index];
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                  child: InkWell(
+                                    onTap: (){
+                                      viewmodel.selectAuthor(item);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                           children: [
+                                             CircleAvatar(backgroundImage: NetworkImage(item.avatarUrl ?? ''),),
+                                             SizedBox(width: 8,),
+                                             Column(
+                                               crossAxisAlignment: CrossAxisAlignment.start,
+                                               children: [
+                                                 Text(item.fullName),
+                                                 Text(item.subTitle),
+                                               ],
+                                             )
+                                           ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
                             ),
                             SizedBox(height: 24),
                             if (viewmodel.modules.isNotEmpty &&
@@ -338,19 +390,17 @@ class EditParagraphWindow extends StatelessWidget {
       text: p.text,
     );
     final viewmodel = Provider.of<EditBlogViewmodel>(context, listen: false);
-    return Container(
-      child: Column(
-        children: [
-          TextField(controller: _controller, maxLines: 10, minLines: 1),
-          TextButton(
-            onPressed: () {
-              p.text = _controller.text;
-              viewmodel.saveChanges();
-            },
-            child: Text('Сохранить'),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        TextField(controller: _controller, maxLines: 10, minLines: 1),
+        TextButton(
+          onPressed: () {
+            p.text = _controller.text;
+            viewmodel.saveChanges();
+          },
+          child: Text('Сохранить'),
+        ),
+      ],
     );
   }
 }

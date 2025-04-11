@@ -14,7 +14,9 @@ class AuthorEntity {
   });
 
   factory AuthorEntity.fromApi(Map map) {
-    return AuthorEntity(firstName: map['firstName'], lastName: map['lastName'], subTitle: map['subTitle'],avatarUrl: map['avatarUrl']);
+    return AuthorEntity(firstName: map['firstName'], lastName: map['lastName'], subTitle: map['subTitle'],avatarUrl: map['avatarUrl'],id: map['_id']);
   }
+
+  String get fullName => '$firstName $lastName';
 
 }

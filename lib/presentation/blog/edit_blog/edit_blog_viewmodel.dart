@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:okenia_crm/data/authors_repository.dart';
 import 'package:okenia_crm/data/blog_repository.dart';
 import 'package:okenia_crm/di.dart';
 import 'package:okenia_crm/domain/entities/author_entity.dart';
@@ -13,6 +14,7 @@ import '../../../data/products_repository.dart';
 
 class EditBlogViewmodel extends ChangeNotifier {
   BlogRepository blogRepository = getIt<BlogRepository>();
+  AuthorsRepository authorsRepository = getIt<AuthorsRepository>();
 
   List<BlogModule> modules = [];
 
@@ -110,6 +112,14 @@ class EditBlogViewmodel extends ChangeNotifier {
     selectedAuthor = author;
     notifyListeners();
   }
+
+  List<AuthorEntity> get authors => authorsRepository.authors;
+
+ Future<bool> getAuthors () async {
+    await authorsRepository.getAllAuthors();
+    return true;
+ }
+
 
 
   Future<void> createPost({
