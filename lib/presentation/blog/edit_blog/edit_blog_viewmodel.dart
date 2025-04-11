@@ -12,8 +12,6 @@ import 'package:path/path.dart' as p;
 import '../../../data/products_repository.dart';
 
 class EditBlogViewmodel extends ChangeNotifier {
-
-
   BlogRepository blogRepository = getIt<BlogRepository>();
 
   List<BlogModule> modules = [];
@@ -54,7 +52,6 @@ class EditBlogViewmodel extends ChangeNotifier {
 
   List<File> get images => _images;
 
-
   Future<List<String>> pickAndUploadMultipleImages() async {
     final typeGroup = XTypeGroup(
       label: 'images',
@@ -77,7 +74,6 @@ class EditBlogViewmodel extends ChangeNotifier {
       );
       uploadedUrls.add(resp.data['image']);
     }
-
 
     notifyListeners();
 
@@ -108,9 +104,27 @@ class EditBlogViewmodel extends ChangeNotifier {
     return null;
   }
 
+  AuthorEntity? selectedAuthor;
 
-  Future<void> createPost ({required String humanUrl,required String title}) async {
-  await  blogRepository.createBlog(BlogEntity(title: title, body: modules, author: AuthorEntity(firstName: '', lastName: '',id: ''), languageA3Code: 'deu', tags: [],humanUrl: humanUrl));
+  void selectAuthor (AuthorEntity author) {
+    selectedAuthor = author;
+    notifyListeners();
   }
 
+
+  Future<void> createPost({
+    required String humanUrl,
+    required String title,
+  }) async {
+    await blogRepository.createBlog(
+      BlogEntity(
+        title: title,
+        body: modules,
+        author: selectedAuthor!,
+        languageA3Code: 'deu',
+        tags: [],
+        humanUrl: humanUrl,
+      ),
+    );
+  }
 }

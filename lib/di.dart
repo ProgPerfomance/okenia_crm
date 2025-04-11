@@ -1,6 +1,7 @@
 
 
 import 'package:get_it/get_it.dart';
+import 'package:okenia_crm/data/authors_repository.dart';
 import 'package:okenia_crm/data/blog_repository.dart';
 import 'package:okenia_crm/data/products_repository.dart';
 
@@ -11,5 +12,6 @@ void register() {
 
   getIt.registerSingleton(ProductsRepository());
   getIt.registerSingleton(BlogRepository());
+  getIt.registerSingleton(AuthorsRepository());
 
 }
