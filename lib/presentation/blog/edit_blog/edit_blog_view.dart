@@ -3,6 +3,11 @@ import 'package:okenia_crm/domain/entities/author_entity.dart';
 import 'package:okenia_crm/domain/entities/blog_entity.dart';
 import 'package:okenia_crm/presentation/blog/edit_blog/edit_blog_viewmodel.dart';
 import 'package:okenia_crm/presentation/blog/edit_blog/widgets/add_blog_module.dart';
+import 'package:okenia_crm/presentation/blog/edit_blog/widgets/edit/edit_header.dart';
+import 'package:okenia_crm/presentation/blog/edit_blog/widgets/edit/edit_image.dart';
+import 'package:okenia_crm/presentation/blog/edit_blog/widgets/edit/edit_multi_image.dart';
+import 'package:okenia_crm/presentation/blog/edit_blog/widgets/edit/edit_paragraph.dart';
+import 'package:okenia_crm/presentation/blog/edit_blog/widgets/select_author.dart';
 import 'package:provider/provider.dart';
 
 TextEditingController _titleController = TextEditingController();
@@ -54,65 +59,7 @@ class EditBlogView extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 12),
-                            ExpansionTile(
-                              title:
-                              viewmodel.selectedAuthor != null ?
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(backgroundImage: NetworkImage(viewmodel.selectedAuthor?.avatarUrl ?? ''),),
-                                      SizedBox(width: 8,),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(viewmodel.selectedAuthor?.fullName ?? ''),
-                                          Text(viewmodel.selectedAuthor?.subTitle??''),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ) : Text('Автор'),
-                              children: List.generate(viewmodel.authors.length, (index) {
-                                AuthorEntity item = viewmodel.authors[index];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                                  child: InkWell(
-                                    onTap: (){
-                                      viewmodel.selectAuthor(item);
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                           children: [
-                                             CircleAvatar(backgroundImage: NetworkImage(item.avatarUrl ?? ''),),
-                                             SizedBox(width: 8,),
-                                             Column(
-                                               crossAxisAlignment: CrossAxisAlignment.start,
-                                               children: [
-                                                 Text(item.fullName),
-                                                 Text(item.subTitle),
-                                               ],
-                                             )
-                                           ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }),
-                            ),
+                            SelectAuthor(viewmodel: viewmodel),
                             SizedBox(height: 24),
                             if (viewmodel.modules.isNotEmpty &&
                                 viewmodel.selectedIndex >= 0 &&
@@ -178,116 +125,119 @@ class EditBlogView extends StatelessWidget {
                           border: Border.all(color: Colors.green),
                         ),
                         width: 430,
-                        child: ReorderableListView(
-                          onReorder: viewmodel.reorder,
-                          children: List.generate(viewmodel.modules.length, (
-                            index,
-                          ) {
-                            final item = viewmodel.modules[index];
-                            switch (item) {
-                              case HeaderBlogModule():
-                                return GestureDetector(
-                                  key: UniqueKey(),
-                                  onLongPress: () {
-                                    viewmodel.selectElement(index);
-                                  },
-                                  child: Container(
-                                    height: 200,
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                          item.backgroundImage,
-                                        ),
-                                        fit: BoxFit.cover,
-                                        opacity: 0.3,
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        item.title,
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: ReorderableListView(
+                            onReorder: viewmodel.reorder,
+                            children: List.generate(viewmodel.modules.length, (
+                              index,
+                            ) {
+                              final item = viewmodel.modules[index];
+                              switch (item) {
+                                case HeaderBlogModule():
+                                  return GestureDetector(
+                                    key: UniqueKey(),
+                                    onLongPress: () {
+                                      viewmodel.selectElement(index);
+                                    },
+                                    child: Container(
+                                      height: 200,
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                            item.backgroundImage,
+                                          ),
+                                          fit: BoxFit.cover,
+                                          opacity: 0.3,
                                         ),
                                       ),
+                                      child: Center(
+                                        child: Text(
+                                          item.title,
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                );
-                              case HBlog():
-                                return GestureDetector(
-                                  key: UniqueKey(),
-                                  onLongPress: () {
-                                    viewmodel.selectElement(index);
-                                  },
-                                  child: Text(
-                                    item.text,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                  );
+                                case HBlog():
+                                  return GestureDetector(
+                                    key: UniqueKey(),
+                                    onLongPress: () {
+                                      viewmodel.selectElement(index);
+                                    },
+                                    child: Text(
+                                      item.text,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              case PBlog():
-                                return GestureDetector(
-                                  key: UniqueKey(),
-                                  onLongPress: () {
-                                    viewmodel.selectElement(index);
-                                  },
-                                  child: Text(
-                                    item.text,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
+                                  );
+                                case PBlog():
+                                  return GestureDetector(
+                                    key: UniqueKey(),
+                                    onLongPress: () {
+                                      viewmodel.selectElement(index);
+                                    },
+                                    child: Text(
+                                      item.text,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              case ImageBlog():
-                                return GestureDetector(
-                                  onTap: () {
-                                    viewmodel.selectElement(index);
-                                  },
-                                  key: UniqueKey(),
-                                  child: Image.network(
-                                    item.imageUrl,
-                                    height: 200,
-                                    fit: BoxFit.cover,
-                                    width: MediaQuery.of(context).size.width,
-                                  ),
-                                );
-                              case MultiImageBlog():
-                                return SizedBox(
-                                  key: UniqueKey(),
-                                  height: 200,
-                                  child: GestureDetector(
+                                  );
+                                case ImageBlog():
+                                  return GestureDetector(
                                     onTap: () {
                                       viewmodel.selectElement(index);
                                     },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: PageView(
-                                        children:
-                                            item.imageUrls
-                                                .map(
-                                                  (v) => Image.network(
-                                                    v,
-                                                    height: 200,
-                                                    fit: BoxFit.cover,
-                                                    width:
-                                                        MediaQuery.of(
-                                                          context,
-                                                        ).size.width,
-                                                  ),
-                                                )
-                                                .toList(),
+                                    key: UniqueKey(),
+                                    child: Image.network(
+                                      item.imageUrl,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                      width: MediaQuery.of(context).size.width,
+                                    ),
+                                  );
+                                case MultiImageBlog():
+                                  return SizedBox(
+                                    key: UniqueKey(),
+                                    height: 200,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        viewmodel.selectElement(index);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: PageView(
+                                          children:
+                                              item.imageUrls
+                                                  .map(
+                                                    (v) => Image.network(
+                                                      v,
+                                                      height: 200,
+                                                      fit: BoxFit.cover,
+                                                      width:
+                                                          MediaQuery.of(
+                                                            context,
+                                                          ).size.width,
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                            }
-                          }),
+                                  );
+                              }
+                            }),
+                          ),
                         ),
                       ),
 
@@ -354,138 +304,65 @@ class EditBlogView extends StatelessWidget {
     );
   }
 }
+class EditableTextBlock extends StatefulWidget {
+  final String text;
 
-// Stack(children: [
-//                 BaseButton(title: 'Новый блок', onTap: (){}),
-//                 Material(
-//                   elevation: 12,
-//                   borderRadius: BorderRadius.circular(12),
-//                   child: Container(
-//                     decoration: BoxDecoration(
-//                       color: Colors.white,
-//                       borderRadius: BorderRadius.circular(12),
-//                     ),
-//                     child: Padding(
-//                       padding: const EdgeInsets.all(12.0),
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text('Шапка'),
-//                           SizedBox(height: 12,),
-//                           Divider(),
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 )
-//               ]),
-
-class EditParagraphWindow extends StatelessWidget {
-  PBlog p;
-  EditParagraphWindow({super.key, required this.p});
+  const EditableTextBlock({super.key, required this.text});
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController(
-      text: p.text,
-    );
-    final viewmodel = Provider.of<EditBlogViewmodel>(context, listen: false);
-    return Column(
-      children: [
-        TextField(controller: _controller, maxLines: 10, minLines: 1),
-        TextButton(
-          onPressed: () {
-            p.text = _controller.text;
-            viewmodel.saveChanges();
-          },
-          child: Text('Сохранить'),
-        ),
-      ],
-    );
-  }
+  State<EditableTextBlock> createState() => _EditableTextBlockState();
 }
 
-class EditHeaderWindow extends StatelessWidget {
-  HBlog h;
-  EditHeaderWindow({super.key, required this.h});
+class _EditableTextBlockState extends State<EditableTextBlock> {
+  final GlobalKey _selectableTextKey = GlobalKey();
+  TextSelection? _selection;
+  String get text => widget.text;
 
-  @override
-  Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController(
-      text: h.text,
-    );
-    final viewmodel = Provider.of<EditBlogViewmodel>(context, listen: false);
-    return Column(
-      children: [
-        TextField(controller: _controller),
-        TextButton(
-          onPressed: () {
-            h.text = _controller.text;
-            viewmodel.saveChanges();
-          },
-          child: Text('Сохранить'),
-        ),
-      ],
-    );
+  void _applyBlueStyle() {
+    final selection = _selection;
+    if (selection == null || selection.isCollapsed) return;
+
+    final selected = text.substring(selection.start, selection.end);
+    final before = text.substring(0, selection.start);
+    final after = text.substring(selection.end);
+
+    final newText = '$before<a>$selected</a>$after';
+
+    // Просто обновим отображение — не меняем modules[index]
+    setState(() {
+      _selection = null;
+    });
+
+    print('💙 Новый текст с ссылкой: $newText');
   }
-}
-
-class EditImageWindow extends StatelessWidget {
-  ImageBlog image;
-  EditImageWindow({super.key, required this.image});
 
   @override
   Widget build(BuildContext context) {
-    ;
-    final viewmodel = Provider.of<EditBlogViewmodel>(context, listen: false);
-    return Column(
-      children: [
-        TextButton(
-          onPressed: () async {
-            String? img = await viewmodel.pickAndUploadImage();
-            if (img != null) {
-              image.imageUrl = img;
-            }
-          },
-          child: Text('Загрузить картинку'),
-        ),
+    return GestureDetector(
+      onSecondaryTapDown: (details) {
+        final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+        final position = overlay.localToGlobal(details.globalPosition);
 
-        TextButton(
-          onPressed: () {
-            viewmodel.saveChanges();
-          },
-          child: Text('Обновить'),
-        ),
-      ],
-    );
-  }
-}
-
-class EditMultiImageWindow extends StatelessWidget {
-  MultiImageBlog images;
-  EditMultiImageWindow({super.key, required this.images});
-
-  @override
-  Widget build(BuildContext context) {
-    ;
-    final viewmodel = Provider.of<EditBlogViewmodel>(context, listen: false);
-    return Column(
-      children: [
-        TextButton(
-          onPressed: () async {
-            List imgs = await viewmodel.pickAndUploadMultipleImages();
-            images.imageUrls = imgs;
-          },
-          child: Text('Загрузить картинку'),
-        ),
-
-        TextButton(
-          onPressed: () {
-            viewmodel.saveChanges();
-          },
-          child: Text('Обновить'),
-        ),
-      ],
+        showMenu(
+          context: context,
+          position: RelativeRect.fromLTRB(position.dx, position.dy, 0, 0),
+          items: [
+            PopupMenuItem(
+              child: Text("Сделать ссылкой"),
+              onTap: _applyBlueStyle,
+            )
+          ],
+        );
+      },
+      child: SelectableText(
+        widget.text,
+        key: _selectableTextKey,
+        onSelectionChanged: (selection, cause) {
+          setState(() {
+            _selection = selection;
+          });
+        },
+      ),
     );
   }
 }

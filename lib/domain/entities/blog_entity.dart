@@ -92,11 +92,13 @@ class HBlog extends BlogModule {
    String text;
   HBlog({required this.text});
 }
-
 class PBlog extends BlogModule {
-   String text;
-  PBlog({required this.text});
+  String text;
+  String? styledText; // хранит текст с <a>тегами</a>
+
+  PBlog({required this.text, this.styledText});
 }
+
 
 class ImageBlog extends BlogModule {
    String imageUrl;

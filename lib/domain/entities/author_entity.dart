@@ -1,4 +1,3 @@
-
 class AuthorEntity {
   final String? id;
   final String firstName;
@@ -14,9 +13,14 @@ class AuthorEntity {
   });
 
   factory AuthorEntity.fromApi(Map map) {
-    return AuthorEntity(firstName: map['firstName'], lastName: map['lastName'], subTitle: map['subTitle'],avatarUrl: map['avatarUrl'],id: map['_id']);
+    return AuthorEntity(
+      firstName: map['firstName'],
+      lastName: map['lastName'],
+      subTitle: map['subTitle'],
+      avatarUrl: map['avatarUrl'],
+      id: map['_id'],
+    );
   }
 
   String get fullName => '$firstName $lastName';
-
 }
