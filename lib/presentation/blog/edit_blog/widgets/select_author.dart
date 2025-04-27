@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../domain/entities/author_entity.dart';
-import '../edit_blog_viewmodel.dart';
 
 class SelectAuthor extends StatelessWidget {
   const SelectAuthor({

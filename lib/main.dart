@@ -7,6 +7,7 @@ import 'package:okenia_crm/presentation/product/new_product/new_product_viewmode
 import 'package:okenia_crm/presentation/product/open_product/open_product_viewmodel.dart';
 import 'package:okenia_crm/presentation/product/products_list/products_list_viewmodel.dart';
 import 'package:okenia_crm/presentation/recept/recept_view.dart';
+import 'package:okenia_crm/presentation/recept/recept_viewmodel.dart';
 
 import 'package:provider/provider.dart';
 
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=> NewProductViewmodel()),
         ChangeNotifierProvider(create: (context)=> OpenProductViewmodel()),
         ChangeNotifierProvider(create: (context)=> EditBlogViewmodel()),
+        ChangeNotifierProvider(create: (context)=> ReceptViewmodel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

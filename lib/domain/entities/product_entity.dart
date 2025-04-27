@@ -19,7 +19,7 @@ class ProductEntity {
     this.id,
     required this.price,
     required this.name,
-    required this.categoryId,
+    this.categoryId = "",
     required this.description,
     required this.tags,
     required this.imageUrls,
@@ -28,21 +28,21 @@ class ProductEntity {
     required this.storageConditions,
     required this.usageRecommendations,
     required this.country,
-    required this.langAlpha3Code,
+    this.langAlpha3Code = "",
     this.mainImage,
   });
 
   Map createJson() {
     return {
       'name': name,
-      'langAlpha3Code': langAlpha3Code,
+      'langAlpha3Code': langAlpha3Code ?? "",
       'categoryId': categoryId,
       'images': imageUrls,
       'tags': tags,
       'price': price,
       'priceOld': priceOld,
       //'weidth': weidth,
-      'description': description,
+      'description': description ?? "",
       'tagId': tagId,
       'storageConditions': storageConditions,
       'usageRecommendations': usageRecommendations,
@@ -53,9 +53,9 @@ class ProductEntity {
   factory ProductEntity.fromApi(Map map) {
     return ProductEntity(
       price: null,// map['price'],
-      name: map['name'],
+      name: map['name_de'],
       categoryId: map['categoryId'],
-      description: map['description'],
+      description: map['description'] ?? "",
       tags: map['tags'],
       imageUrls: map['images'],
       priceOld: null,// map['priceOld'],
