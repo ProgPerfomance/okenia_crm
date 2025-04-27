@@ -7,6 +7,7 @@ import 'package:okenia_crm/data/products_repository.dart';
 import 'package:okenia_crm/domain/entities/author_entity.dart';
 import 'package:okenia_crm/domain/entities/product_entity.dart';
 import 'package:path/path.dart' as p;
+import 'package:translit/translit.dart';
 
 import '../../data/authors_repository.dart';
 import '../../di.dart';
@@ -17,6 +18,30 @@ class ReceptViewmodel extends ChangeNotifier {
   AuthorsRepository authorsRepository = getIt<AuthorsRepository>();
   final ProductsRepository _productsRepository = getIt<ProductsRepository>();
   AuthorEntity? selectedAuthor;
+
+
+  final TextEditingController _humanUrlController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _subTitleController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+
+  TextEditingController get humanUrl => _humanUrlController;
+  TextEditingController get titleController => _titleController;
+  TextEditingController get subTitleController => _subTitleController;
+  TextEditingController get timeController => _timeController;
+
+
+  void generateHumanUrl () {
+
+      final translit = Translit();
+      _humanUrlController.text = translit
+          .toTranslit(source: _titleController.text)
+          .replaceAll(' ', '_')
+          .toLowerCase();
+
+   //   notifyListeners();
+
+  }
 
   List<String> tags = [];
 

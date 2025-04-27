@@ -6,10 +6,8 @@ import 'package:okenia_crm/presentation/recept/windows/image_window.dart';
 import 'package:okenia_crm/presentation/recept/windows/title_window.dart';
 import 'package:provider/provider.dart';
 
-final TextEditingController _titleController = TextEditingController();
-final TextEditingController _subTitleController = TextEditingController();
-final TextEditingController _timeController = TextEditingController();
-final TextEditingController _humanUrl = TextEditingController();
+
+
 
 class ReceptView extends StatelessWidget {
   const ReceptView({super.key});
@@ -32,141 +30,142 @@ class ReceptView extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 2.3,
-                    child: Expanded(
-                      child: ListView(
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 130,
-                                height: 130,
-                                child: Image.network("", fit: BoxFit.cover),
-                              ),
-                              const SizedBox(width: 24),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    TextField(
-                                      controller: _titleController,
-                                      decoration: const InputDecoration(
-                                        labelText: 'Название',
-                                      ),
+                    child: ListView(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 130,
+                              height: 130,
+                              child: Image.network("", fit: BoxFit.cover),
+                            ),
+                            const SizedBox(width: 24),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextField(
+                                    controller: viewmodel.titleController,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Название',
                                     ),
-                                    const SizedBox(height: 18),
-                                    TextField(
-                                      controller: _subTitleController,
-                                      decoration: const InputDecoration(
-                                        labelText: 'Под заголовок',
-                                      ),
+                                  ),
+                                  const SizedBox(height: 18),
+                                  TextField(
+                                    controller: viewmodel.subTitleController,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Под заголовок',
                                     ),
-                                    const SizedBox(height: 18),
-                                    TextField(
-                                      controller: _timeController,
-                                      decoration: const InputDecoration(
-                                        labelText: 'Время приготовления (мин)',
-                                      ),
-                                      keyboardType: TextInputType.number,
+                                  ),
+                                  const SizedBox(height: 18),
+                                  TextField(
+                                    controller: viewmodel.timeController,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Время приготовления (мин)',
                                     ),
-                                    const SizedBox(height: 24),
-                                    SelectAuthor(
-                                      viewmodel: viewmodel,
-                                    ),
-                                    const SizedBox(height: 18),
-                                    ExpansionTile(
-                                      title:
-                                          viewmodel.selectedProduct != null
-                                              ? Row(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 48,
-                                                    width: 48,
-                                                    child: Image.network(
-                                                      viewmodel
-                                                              .selectedProduct!
-                                                              .mainImage ??
-                                                          "",
-
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 8),
-                                                  Text(
+                                    keyboardType: TextInputType.number,
+                                  ),
+                                  const SizedBox(height: 24),
+                                  SelectAuthor(
+                                    viewmodel: viewmodel,
+                                  ),
+                                  const SizedBox(height: 18),
+                                  ExpansionTile(
+                                    title:
+                                        viewmodel.selectedProduct != null
+                                            ? Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 48,
+                                                  width: 48,
+                                                  child: Image.network(
                                                     viewmodel
                                                             .selectedProduct!
-                                                            .name ??
-                                                        '',
+                                                            .mainImage ??
+                                                        "",
+
+                                                    fit: BoxFit.cover,
                                                   ),
-                                                ],
-                                              )
-                                              : const Text('Продукт'),
-                                      children: List.generate(
-                                        viewmodel.products.length,
-                                        (index) {
-                                          final product =
-                                              viewmodel.products[index];
-                                          return GestureDetector(
-                                            onTap: () {
-                                              viewmodel.selectProduct(product);
-                                            },
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                vertical: 8.0,
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 48,
-                                                    width: 48,
-                                                    child: Image.network(
-                                                      product.mainImage ?? "",
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 8),
-                                                  Text(product.name ?? ''),
-                                                ],
-                                              ),
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Text(
+                                                  viewmodel
+                                                          .selectedProduct!
+                                                          .name ??
+                                                      '',
+                                                ),
+                                              ],
+                                            )
+                                            : const Text('Продукт'),
+                                    children: List.generate(
+                                      viewmodel.products.length,
+                                      (index) {
+                                        final product =
+                                            viewmodel.products[index];
+                                        return GestureDetector(
+                                          onTap: () {
+                                            viewmodel.selectProduct(product);
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0,
                                             ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(height: 12,),
-                                    Text('Язык рецепта', style: TextStyle(fontSize: 18),),
-                                    SizedBox(height: 12,),
-                                    Row(
-                                      children: List.generate(locales.length, (index) {
-                                        LocaleEntity item = locales[index];
-                                        return GestureDetector(onTap: () {
-                                          viewmodel.selectLocale(item);
-                                        }, child: Container(
-                                          decoration: BoxDecoration(
-                                            color: viewmodel.selectedLocale.a2value == item.a2value ? Colors.blueAccent : null,
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 48,
+                                                  width: 48,
+                                                  child: Image.network(
+                                                    product.mainImage ?? "",
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Text(product.name ?? ''),
+                                              ],
+                                            ),
                                           ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 12),
-                                              child: Text(item.toString()),
-                                            )));
-                                      })
-                                    )
-                                  ],
-                                ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(height: 12,),
+                                  Text('Язык рецепта', style: TextStyle(fontSize: 18),),
+                                  SizedBox(height: 12,),
+                                  Row(
+                                    children: List.generate(locales.length, (index) {
+                                      LocaleEntity item = locales[index];
+                                      return GestureDetector(onTap: () {
+                                        viewmodel.selectLocale(item);
+                                      }, child: Container(
+                                        decoration: BoxDecoration(
+                                          color: viewmodel.selectedLocale.a2value == item.a2value ? Colors.blueAccent : null,
+                                        ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 12),
+                                            child: Text(item.toString()),
+                                          )));
+                                    })
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
-                          SizedBox(height: 12,),
-                          TextField(
-                            controller: _humanUrl,
-                            decoration: const InputDecoration(
-                              labelText: 'Человеческий Url',
                             ),
+                          ],
+                        ),
+                        SizedBox(height: 12,),
+                        TextField(
+                          controller: viewmodel.humanUrl,
+                          decoration:  InputDecoration(
+                            labelText: 'Человеческий Url',
+                            suffixIcon: IconButton(onPressed: (){
+                              viewmodel.generateHumanUrl();
+                            }, icon: Icon(Icons.generating_tokens_outlined)),
                           ),
-                          SizedBox(height: 18,),
-                          TagsInput(),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 18,),
+                        TagsInput(),
+                      ],
                     ),
                   ),
                   Expanded(
@@ -195,7 +194,7 @@ class ReceptView extends StatelessWidget {
                         SizedBox(
                           width: 400,
                           height: MediaQuery.of(context).size.height - 230,
-                          child: Expanded(child: Container(
+                          child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.green)
                             ),
@@ -205,7 +204,7 @@ class ReceptView extends StatelessWidget {
                                 children: viewmodel.blocks.map((v)=> v.widget).toList(),
                               ),
                             ),
-                          )),
+                          ),
                         ),
                       ],
                     ),

@@ -42,7 +42,7 @@ dependencies:
   path:
   flutter_colorpicker:
   get_it:
-
+  translit:
 dev_dependencies:
   flutter_test:
     sdk: flutter
