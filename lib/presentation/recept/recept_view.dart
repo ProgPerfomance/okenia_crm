@@ -35,10 +35,17 @@ class ReceptView extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: 130,
-                              height: 130,
-                              child: Image.network("", fit: BoxFit.cover),
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () async {
+                              await  viewmodel.setImageUrl();
+                              print(viewmodel.mainImageUrl);
+                              },
+                              child: SizedBox(
+                                width: 130,
+                                height: 130,
+                                child: Image.network(viewmodel.mainImageUrl ?? "", fit: BoxFit.cover),
+                              ),
                             ),
                             const SizedBox(width: 24),
                             Expanded(
@@ -165,6 +172,11 @@ class ReceptView extends StatelessWidget {
                         ),
                         SizedBox(height: 18,),
                         TagsInput(),
+                        SizedBox(height: 32,),
+                        TextButton(onPressed: (){
+                          viewmodel.createReciept();
+                        }, child:
+                        Text('Создать')),
                       ],
                     ),
                   ),

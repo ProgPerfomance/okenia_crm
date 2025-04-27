@@ -132,6 +132,35 @@ class ReceptViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  String? mainImageUrl;
+
+   setImageUrl () async {
+    mainImageUrl = await pickAndUploadImage();
+    notifyListeners();
+  }
+
+
+  Future<void> createReciept () async {
+
+    _dio.post('${baseUrl}/recipes/create',data: {
+      'mainImageUrl': mainImageUrl,
+      'title': _titleController.text,
+      'subTitle': _subTitleController.text,
+      'tags': tags,
+      'langA2': selectedLocale.a2value,
+      'productId': selectedProduct?.id,
+      'authorId': selectedAuthor?.id,
+      'body': List.generate(blocks.length, (index){
+        return {'type': blocks[index].type, 'body': blocks[index].content};
+      }),
+      'time': int.tryParse(_timeController.text),
+
+    });
+
+  }
+
+
 }
 
 class BlockReceptEntity {
