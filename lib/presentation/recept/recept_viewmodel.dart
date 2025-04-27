@@ -64,6 +64,12 @@ class ReceptViewmodel extends ChangeNotifier {
   }
 
 
+  void selectAuthor (AuthorEntity author) {
+    selectedAuthor = author;
+    notifyListeners();
+  }
+
+
   Future<bool> getProducts() async {
     await _productsRepository.getAllProducts('deu');
     return true;
