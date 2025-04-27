@@ -10,7 +10,7 @@ class SelectAuthor extends StatelessWidget {
     required this.viewmodel,
   });
 
-  final EditBlogViewmodel viewmodel;
+  final  viewmodel;
 
   @override
   Widget build(BuildContext context) {
