@@ -22,8 +22,11 @@ class TitleWindow extends StatelessWidget {
               onPressed: () {
                 viewmodel.addElement(
                   BlockReceptEntity(
-                    type: 'h',
-                    widget: Text(_titleController.text),
+                    type: 'h1',
+                    widget: Text(_titleController.text,style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),),
                     content: _titleController.text,
                   ),
                 );

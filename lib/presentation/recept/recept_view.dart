@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:okenia_crm/presentation/blog/edit_blog/widgets/select_author.dart';
 import 'package:okenia_crm/presentation/recept/recept_viewmodel.dart';
 import 'package:okenia_crm/presentation/recept/windows/body_window.dart';
+import 'package:okenia_crm/presentation/recept/windows/image_window.dart';
 import 'package:okenia_crm/presentation/recept/windows/title_window.dart';
 import 'package:provider/provider.dart';
 
@@ -183,15 +184,29 @@ class ReceptView extends StatelessWidget {
                               Navigator.push(context, MaterialPageRoute(builder: (context)=> BodyWindow()));
                             }),
                             SizedBox(width: 12,),
-                            AddBlockButton(title: 'Картинка', callback: () {}),
+                            AddBlockButton(title: 'Картинка', callback: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> ImageWindow()));
+                            }),
                           ],
                         ),
                         SizedBox(
                           height: 18,
                         ),
-                        Expanded(child: ListView(
-
-                        )),
+                        SizedBox(
+                          width: 400,
+                          height: MediaQuery.of(context).size.height - 230,
+                          child: Expanded(child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.green)
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: ListView(
+                                children: viewmodel.blocks.map((v)=> v.widget).toList(),
+                              ),
+                            ),
+                          )),
+                        ),
                       ],
                     ),
                   ),

@@ -1,10 +1,17 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:okenia_crm/data/products_repository.dart';
 import 'package:okenia_crm/domain/entities/author_entity.dart';
 import 'package:okenia_crm/domain/entities/product_entity.dart';
+import 'package:path/path.dart' as p;
 
 import '../../data/authors_repository.dart';
 import '../../di.dart';
+
+Dio _dio = Dio();
 
 class ReceptViewmodel extends ChangeNotifier {
   AuthorsRepository authorsRepository = getIt<AuthorsRepository>();
@@ -31,6 +38,31 @@ class ReceptViewmodel extends ChangeNotifier {
     await authorsRepository.getAllAuthors();
     return true;
   }
+
+
+
+  Future<String?> pickAndUploadImage() async {
+    final typeGroup = XTypeGroup(
+      label: 'images',
+      extensions: ['jpg', 'jpeg', 'png'],
+    );
+
+    final file = await openFile(acceptedTypeGroups: [typeGroup]);
+    if (file != null) {
+      final extension = p.extension(file.path).replaceFirst('.', '');
+      final resp = await _dio.post(
+        '$baseUrl/photos/add',
+        data: {
+          'imageString': base64Encode(File(file.path).readAsBytesSync()),
+          'imageType': extension,
+        },
+      );
+      return resp.data['image'];
+    }
+
+    return null;
+  }
+
 
   Future<bool> getProducts() async {
     await _productsRepository.getAllProducts('deu');
