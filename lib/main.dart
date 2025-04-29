@@ -8,6 +8,7 @@ import 'package:okenia_crm/presentation/product/open_product/open_product_viewmo
 import 'package:okenia_crm/presentation/product/products_list/products_list_viewmodel.dart';
 import 'package:okenia_crm/presentation/recept/recept_view.dart';
 import 'package:okenia_crm/presentation/recept/recept_viewmodel.dart';
+import 'package:okenia_crm/presentation/reciept_list/recipe_list_viewmodel.dart';
 
 import 'package:provider/provider.dart';
 
@@ -30,10 +31,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=> OpenProductViewmodel()),
         ChangeNotifierProvider(create: (context)=> EditBlogViewmodel()),
         ChangeNotifierProvider(create: (context)=> ReceptViewmodel()),
+        ChangeNotifierProvider(create: (context)=> RecipeListViewmodel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: ReceptView(),
+        home: MainView(),
       ),
     );
   }

@@ -147,6 +147,7 @@ class ReceptViewmodel extends ChangeNotifier {
       'mainImageUrl': mainImageUrl,
       'title': _titleController.text,
       'subTitle': _subTitleController.text,
+      'humanUrl': _humanUrlController.text,
       'tags': tags,
       'langA2': selectedLocale.a2value,
       'productId': selectedProduct?.id,

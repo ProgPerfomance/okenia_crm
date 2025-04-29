@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:okenia_crm/presentation/blog/blog_list/blog_list_view.dart';
 import 'package:okenia_crm/presentation/main_screen/main_viewmodel.dart';
+import 'package:okenia_crm/presentation/recept/recept_view.dart';
 import 'package:provider/provider.dart';
 
 import '../product/products_list/products_list_view.dart';
 
-List<Widget> screens = [Scaffold(),ProductsListView(),BlogListView()];
+List<Widget> screens = [Scaffold(),ProductsListView(),BlogListView(), ReceptView()];
 
 class MainView extends StatelessWidget {
   const MainView({super.key});
@@ -37,6 +38,8 @@ class MainView extends StatelessWidget {
                     NavBarButton(index: 1, icon:  CupertinoIcons.cube_box,),
                     SizedBox(height: 24),
                     NavBarButton(index: 2, icon:  CupertinoIcons.arrow_up_doc,),
+                    SizedBox(height: 24),
+                    NavBarButton(index: 3, icon:  Icons.emoji_food_beverage,),
                   ],
                 ),
               ),
